@@ -4,7 +4,8 @@ import "./App.css";
 import NewTaskForm from "../NewTaskForm/NewTaskForm";
 import TaskList from "../TaskList/TaskList";
 import Footer from "../Footer/Footer";
-var a;
+var a = 5;
+var b;
 export default class App extends React.Component {
   maxId = 100;
 
