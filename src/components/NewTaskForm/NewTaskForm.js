@@ -1,14 +1,17 @@
 import "./NewTaskForm.css";
 import React from "react";
+
 export default class NewTaskForm extends React.Component {
   state = {
     label: "",
   };
+
   onLabelChange = (event) => {
     this.setState({
       label: event.target.value,
     });
   };
+
   onSubmit = (event) => {
     event.preventDefault();
     if (this.state.label.length !== 0) {
@@ -16,6 +19,7 @@ export default class NewTaskForm extends React.Component {
       this.setState({ label: "" });
     }
   };
+
   render() {
     return (
       <header className="header">

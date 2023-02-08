@@ -7,7 +7,7 @@ export default class Task extends React.Component {
     const { label, date, onDeleted, onToggleCompleted, completed } = this.props;
 
     const taskClassName = completed ? "completed" : "";
-    const checkbox = taskClassName ? true : false;
+    const checkbox = !!taskClassName;
     const currentDate = new Date();
     const createDate = date;
     const created = formatDistance(createDate, currentDate, {
@@ -29,8 +29,8 @@ export default class Task extends React.Component {
             </span>
             <span className="created">{created}</span>
           </label>
-          <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy" onClick={onDeleted}></button>
+          <button className="icon icon-edit" />
+          <button className="icon icon-destroy" onClick={onDeleted} />
         </div>
       </li>
     );

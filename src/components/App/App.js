@@ -4,8 +4,7 @@ import "./App.css";
 import NewTaskForm from "../NewTaskForm/NewTaskForm";
 import TaskList from "../TaskList/TaskList";
 import Footer from "../Footer/Footer";
-var a = 5;
-var b;
+
 export default class App extends React.Component {
   maxId = 100;
 
@@ -13,16 +12,18 @@ export default class App extends React.Component {
     filter: "all",
     toDoData: [],
   };
-  //Создание таска
+
+  // Создание таска
   createToDoItem(label) {
     return {
-      label: label,
+      label,
       date: new Date(),
       completed: false,
       id: this.maxId++,
     };
   }
-  //Добавление таска
+
+  // Добавление таска
   addItem = (text) => {
     const newItem = this.createToDoItem(text);
     this.setState(({ toDoData }) => {
@@ -30,6 +31,7 @@ export default class App extends React.Component {
       return { toDoData: newArray };
     });
   };
+
   // Удаление таска
   deleteItem = (id) => {
     this.setState(({ toDoData }) => {
@@ -39,6 +41,7 @@ export default class App extends React.Component {
       return { toDoData: newArray };
     });
   };
+
   // Смена состояния
   onToggleCompleted = (id) => {
     this.setState(({ toDoData }) => {
@@ -54,7 +57,8 @@ export default class App extends React.Component {
       return { toDoData: newArray };
     });
   };
-  //Фильтр для отрисовки
+
+  // Фильтр для отрисовки
   filterTask = () => {
     switch (this.state.filter) {
       case "all":
@@ -67,19 +71,20 @@ export default class App extends React.Component {
         return this.state.toDoData;
     }
   };
-  //Изменения фильтра
+
+  // Изменения фильтра
   onFilterChange = (filter) => {
-    this.setState({ filter: filter });
+    this.setState({ filter });
   };
-  //Удаление выполненных тасков
+
+  // Удаление выполненных тасков
   clearCompleted = () => {
     this.setState(({ toDoData }) => {
-      let completedTask = toDoData.filter((item) => {
-        return !item.completed;
-      });
+      const completedTask = toDoData.filter((item) => !item.completed);
       return { toDoData: completedTask };
     });
   };
+
   render() {
     const { toDoData, filter } = this.state;
     const countActivItems = toDoData.filter((item) => !item.completed).length;

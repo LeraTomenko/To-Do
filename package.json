@@ -15,13 +15,14 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix --color",
-    "format": "prettier  — write src/**/*.js",
+    "lint": "eslint \"**/*.{jsx,tsx,js}\"",
+    "lint:fix": "eslint \"**/*.{jsx,tsx,js}\" --fix --color",
+    "format": "prettier ./src --write",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -50,20 +51,14 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "husky": "^8.0.3",
+    "husky": "^8.0.0",
     "lint-staged": "^13.1.1",
     "prettier": "^2.8.3"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "lint-staged": {
-    "*.(js|jsx|ts|tsx)": [
+     "*.(js|jsx|ts|tsx)": [
       "npm run lint:fix",
-      "npm run format",
-      "git add"
+      "git add ."
     ]
   }
 }

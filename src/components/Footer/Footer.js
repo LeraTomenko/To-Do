@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import TaskFilter from "./TasksFilter/TasksFilter";
 import "./Footer.css";
 
-const Footer = ({ count, filterStatus, onFilterChange, clearCompleted }) => {
+function Footer({ count, filterStatus, onFilterChange, clearCompleted }) {
   return (
     <footer className="footer">
       <span className="todo-count">{count} items left</span>
@@ -13,7 +13,7 @@ const Footer = ({ count, filterStatus, onFilterChange, clearCompleted }) => {
       </button>
     </footer>
   );
-};
+}
 Footer.propTypes = {
   count: PropTypes.number,
 };

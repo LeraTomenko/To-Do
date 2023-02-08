@@ -8,22 +8,20 @@ export default class TaskList extends React.Component {
   render() {
     const { todos, onDeleted, onToggleCompleted } = this.props;
 
-    const elements = todos.map((item) => {
-      return (
-        <Task
-          label={item.label}
-          completed={item.completed}
-          key={item.id}
-          date={item.date}
-          onDeleted={() => {
-            onDeleted(item.id);
-          }}
-          onToggleCompleted={() => {
-            onToggleCompleted(item.id);
-          }}
-        />
-      );
-    });
+    const elements = todos.map((item) => (
+      <Task
+        label={item.label}
+        completed={item.completed}
+        key={item.id}
+        date={item.date}
+        onDeleted={() => {
+          onDeleted(item.id);
+        }}
+        onToggleCompleted={() => {
+          onToggleCompleted(item.id);
+        }}
+      />
+    ));
 
     return <ul className="todo-list">{elements}</ul>;
   }
