@@ -1,7 +1,16 @@
 import "./NewTaskForm.css";
 import React from "react";
+import PropTypes from "prop-types";
 
 export default class NewTaskForm extends React.Component {
+  static defaultProps = {
+    addItem: () => {},
+  };
+
+  static propTypes = {
+    addItem: PropTypes.func,
+  };
+
   state = {
     label: "",
   };
@@ -28,6 +37,7 @@ export default class NewTaskForm extends React.Component {
           <input
             className="new-todo"
             placeholder="What needs to be done?"
+            required
             autoFocus
             onChange={this.onLabelChange}
             value={this.state.label}

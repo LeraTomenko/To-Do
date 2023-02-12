@@ -97,6 +97,7 @@ export default class App extends React.Component {
           onDeleted={this.deleteItem}
           onToggleCompleted={this.onToggleCompleted}
         />
+
         <Footer
           count={countActivItems}
           filterStatus={filter}

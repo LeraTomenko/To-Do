@@ -2,9 +2,19 @@ import "./TaskList.css";
 import React from "react";
 import PropTypes from "prop-types";
 
-import Task from "./Task/task";
+import Task from "../Task/Task";
 
 export default class TaskList extends React.Component {
+  static defaultProps = {
+    todos: [],
+    onDeleted: () => {},
+    onToggleCompleted: () => {},
+  };
+  static propTypes = {
+    todos: PropTypes.array,
+    onDeleted: PropTypes.func,
+    onToggleCompleted: PropTypes.func,
+  };
   render() {
     const { todos, onDeleted, onToggleCompleted } = this.props;
 
@@ -26,8 +36,3 @@ export default class TaskList extends React.Component {
     return <ul className="todo-list">{elements}</ul>;
   }
 }
-TaskList.propTypes = {
-  todos: PropTypes.array,
-  onDeleted: PropTypes.func,
-  onToggleCompleted: PropTypes.func,
-};
