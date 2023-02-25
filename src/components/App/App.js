@@ -14,18 +14,19 @@ export default class App extends React.Component {
   };
 
   // Создание таска
-  createToDoItem(label) {
+  createToDoItem(label, timer) {
     return {
       label,
       date: new Date(),
       completed: false,
       id: this.maxId++,
+      timer,
     };
   }
 
   // Добавление таска
-  addItem = (text) => {
-    const newItem = this.createToDoItem(text);
+  addItem = (text, timer) => {
+    const newItem = this.createToDoItem(text, timer);
     this.setState(({ toDoData }) => {
       const newArray = [...toDoData, newItem];
       return { toDoData: newArray };
