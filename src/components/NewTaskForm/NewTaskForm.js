@@ -10,15 +10,13 @@ export default class NewTaskForm extends React.Component {
   static propTypes = {
     addItem: PropTypes.func,
   };
-  const;
+
   state = {
     label: "",
     labelMin: "",
     labelSec: "",
   };
-  modifyTime = (time) => {
-    return time.toString().padStart(2, "0");
-  };
+
   translateNumbTime = (value, min, max) => {
     if (value > max) return max;
     if (value < min) return min;

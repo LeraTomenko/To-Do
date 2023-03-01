@@ -85,6 +85,21 @@ export default class App extends React.Component {
       return { toDoData: completedTask };
     });
   };
+  //Обновление таймера
+  updateTimer = (id, timer) => {
+    this.setState(({ toDoData }) => {
+      const idx = toDoData.findIndex((el) => el.id === id);
+      const oldItem = toDoData[idx];
+      const newItem = { ...oldItem, timer: timer };
+      const newArray = [
+        ...toDoData.slice(0, idx),
+        newItem,
+        ...toDoData.slice(idx + 1),
+      ];
+
+      return { toDoData: newArray };
+    });
+  };
 
   render() {
     const { toDoData, filter } = this.state;
@@ -97,6 +112,7 @@ export default class App extends React.Component {
           todos={this.filterTask()}
           onDeleted={this.deleteItem}
           onToggleCompleted={this.onToggleCompleted}
+          updateTimer={this.updateTimer}
         />
 
         <Footer

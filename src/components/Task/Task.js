@@ -55,7 +55,10 @@ export default class Task extends React.Component {
     this.startTimer();
   }
   componentWillUnmount() {
+    console.log("Удаление", this.state.timer);
+
     clearInterval(this.interval);
+    this.props.updateTimer(this.props.id, this.state.timer);
   }
 
   render() {

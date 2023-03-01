@@ -9,20 +9,23 @@ export default class TaskList extends React.Component {
     todos: [],
     onDeleted: () => {},
     onToggleCompleted: () => {},
+    updateTimer: () => {},
   };
   static propTypes = {
     todos: PropTypes.array,
     onDeleted: PropTypes.func,
     onToggleCompleted: PropTypes.func,
+    updateTimer: PropTypes.func,
   };
   render() {
-    const { todos, onDeleted, onToggleCompleted } = this.props;
+    const { todos, onDeleted, onToggleCompleted, updateTimer } = this.props;
 
     const elements = todos.map((item) => (
       <Task
         label={item.label}
         completed={item.completed}
         key={item.id}
+        id={item.id}
         date={item.date}
         onDeleted={() => {
           onDeleted(item.id);
@@ -31,6 +34,7 @@ export default class TaskList extends React.Component {
         onToggleCompleted={() => {
           onToggleCompleted(item.id);
         }}
+        updateTimer={(id, value) => updateTimer(id, value)}
       />
     ));
 
