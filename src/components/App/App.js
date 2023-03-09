@@ -1,127 +1,109 @@
-import React from "react";
-
+import React, { useState } from "react";
 import "./App.css";
+// import { set } from "lodash";
+
 import NewTaskForm from "../NewTaskForm/NewTaskForm";
 import TaskList from "../TaskList/TaskList";
 import Footer from "../Footer/Footer";
+const counter = () => {
+  let maxId = 1;
+  return () => maxId++;
+};
 
-export default class App extends React.Component {
-  maxId = 100;
+const maxId = counter();
 
-  state = {
-    filter: "all",
-    toDoData: [],
-  };
+function App() {
+  const [filter, setFilter] = useState("all");
+  const [toDoData, setToDoData] = useState([]);
 
-  // Создание таска
-  createToDoItem(label, timer) {
-    return {
+  // Добавление таска
+  const addItem = (label, timer) => {
+    const newItem = {
       label,
       date: new Date(),
       completed: false,
-      id: this.maxId++,
+      id: maxId(),
       timer,
     };
-  }
-
-  // Добавление таска
-  addItem = (text, timer) => {
-    const newItem = this.createToDoItem(text, timer);
-    this.setState(({ toDoData }) => {
-      const newArray = [...toDoData, newItem];
-      return { toDoData: newArray };
+    setToDoData((toDoData) => {
+      return [...toDoData, newItem];
     });
   };
 
   // Удаление таска
-  deleteItem = (id) => {
-    this.setState(({ toDoData }) => {
+  const deleteItem = (id) => {
+    setToDoData((toDoData) => {
       const idx = toDoData.findIndex((el) => el.id === id);
-      const newArray = [...toDoData.slice(0, idx), ...toDoData.slice(idx + 1)];
-
-      return { toDoData: newArray };
+      return [...toDoData.slice(0, idx), ...toDoData.slice(idx + 1)];
     });
   };
 
   // Смена состояния
-  onToggleCompleted = (id) => {
-    this.setState(({ toDoData }) => {
+  const onToggleCompleted = (id) => {
+    setToDoData((toDoData) => {
       const idx = toDoData.findIndex((el) => el.id === id);
       const oldItem = toDoData[idx];
       const newItem = { ...oldItem, completed: !oldItem.completed };
-      const newArray = [
-        ...toDoData.slice(0, idx),
-        newItem,
-        ...toDoData.slice(idx + 1),
-      ];
-
-      return { toDoData: newArray };
+      return [...toDoData.slice(0, idx), newItem, ...toDoData.slice(idx + 1)];
     });
   };
 
   // Фильтр для отрисовки
-  filterTask = () => {
-    switch (this.state.filter) {
+  const filterTask = () => {
+    switch (filter) {
       case "all":
-        return this.state.toDoData;
+        return toDoData;
       case "active":
-        return this.state.toDoData.filter((item) => !item.completed);
+        return toDoData.filter((item) => !item.completed);
       case "completed":
-        return this.state.toDoData.filter((item) => item.completed);
+        return toDoData.filter((item) => item.completed);
       default:
-        return this.state.toDoData;
+        return toDoData;
     }
   };
 
   // Изменения фильтра
-  onFilterChange = (filter) => {
-    this.setState({ filter });
+  const onFilterChange = (filter) => {
+    setFilter(filter);
   };
 
   // Удаление выполненных тасков
-  clearCompleted = () => {
-    this.setState(({ toDoData }) => {
-      const completedTask = toDoData.filter((item) => !item.completed);
-      return { toDoData: completedTask };
-    });
+  const clearCompleted = () => {
+    const completedTask = toDoData.filter((item) => !item.completed);
+    setToDoData(completedTask);
   };
   //Обновление таймера
-  updateTimer = (id, timer) => {
-    this.setState(({ toDoData }) => {
+  const updateTimer = (id, timer) => {
+    setToDoData((toDoData) => {
       const idx = toDoData.findIndex((el) => el.id === id);
       const oldItem = toDoData[idx];
+      if (typeof oldItem === "undefined") return toDoData;
       const newItem = { ...oldItem, timer: timer };
-      const newArray = [
-        ...toDoData.slice(0, idx),
-        newItem,
-        ...toDoData.slice(idx + 1),
-      ];
-
-      return { toDoData: newArray };
+      return [...toDoData.slice(0, idx), newItem, ...toDoData.slice(idx + 1)];
     });
   };
 
-  render() {
-    const { toDoData, filter } = this.state;
-    const countActivItems = toDoData.filter((item) => !item.completed).length;
+  const countActivItems =
+    toDoData.length !== 0
+      ? toDoData.filter((item) => !item.completed).length
+      : null;
 
-    return (
-      <div>
-        <NewTaskForm addItem={this.addItem} />
-        <TaskList
-          todos={this.filterTask()}
-          onDeleted={this.deleteItem}
-          onToggleCompleted={this.onToggleCompleted}
-          updateTimer={this.updateTimer}
-        />
-
-        <Footer
-          count={countActivItems}
-          filterStatus={filter}
-          onFilterChange={this.onFilterChange}
-          clearCompleted={this.clearCompleted}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <NewTaskForm addItem={addItem} />
+      <TaskList
+        todos={filterTask()}
+        onDeleted={deleteItem}
+        onToggleCompleted={onToggleCompleted}
+        updateTimer={updateTimer}
+      />
+      <Footer
+        count={countActivItems}
+        filterStatus={filter}
+        onFilterChange={onFilterChange}
+        clearCompleted={clearCompleted}
+      />
+    </div>
+  );
 }
+export default App;

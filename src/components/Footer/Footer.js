@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 
 import TaskFilter from "../TasksFilter/TasksFilter";
 import "./Footer.css";
@@ -14,17 +14,17 @@ function Footer({ count, filterStatus, onFilterChange, clearCompleted }) {
     </footer>
   );
 }
-Footer.defaultProps = {
-  count: 0,
-  filterStatus: "all",
-  onFilterChange: () => {},
-  clearCompleted: () => {},
-};
+// Footer.defaultProps = {
+//   count: 0,
+//   filterStatus: "all",
+//   onFilterChange: () => {},
+//   clearCompleted: () => {},
+// };
 
-Footer.propTypes = {
-  count: PropTypes.number,
-  filterStatus: PropTypes.string,
-  onFilterChange: PropTypes.func,
-  clearCompleted: PropTypes.func,
-};
+// Footer.propTypes = {
+//   count: PropTypes.number,
+//   filterStatus: PropTypes.string,
+//   onFilterChange: PropTypes.func,
+//   clearCompleted: PropTypes.func,
+// };
 export default Footer;

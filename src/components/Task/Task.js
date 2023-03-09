@@ -1,107 +1,101 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./task.css";
 import { formatDistance } from "date-fns";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import classNames from "classnames";
 
-export default class Task extends React.Component {
-  static defaultProps = {
-    date: new Date(),
-    onDeleted: () => {},
-    onToggleCompleted: () => {},
-    completed: false,
-  };
-  static propTypes = {
-    date: PropTypes.object,
-    onDeleted: PropTypes.func,
-    onToggleCompleted: PropTypes.func,
-    completed: PropTypes.bool,
-  };
-  state = {
-    timer: this.props.timer,
-    pause: true,
-  };
+function Task({
+  label,
+  date,
+  onDeleted,
+  onToggleCompleted,
+  completed,
+  timer,
+  updateTimer,
+  id,
+}) {
+  // static defaultProps = {
+  //   date: new Date(),
+  //   onDeleted: () => {},
+  //   onToggleCompleted: () => {},
+  //   completed: false,
+  // };
+  // static propTypes = {
+  //   date: PropTypes.object,
+  //   onDeleted: PropTypes.func,
+  //   onToggleCompleted: PropTypes.func,
+  //   completed: PropTypes.bool,
+  // };
+  const [timerTask, setTimerTask] = useState(timer);
+  const [pause, setPause] = useState(true);
+
   //Приобразование таймера
-  modifyTime = (time) => {
+  const modifyTime = (time) => {
     return time.toString().padStart(2, "0");
   };
-  timerSet = () => {
-    const { timer } = this.state;
-    if (timer > 0) {
-      return `${this.modifyTime(Math.floor(timer / 60))}:${this.modifyTime(
-        Math.floor(timer % 60)
+  const timerSet = () => {
+    if (timerTask > 0) {
+      return `${modifyTime(Math.floor(timerTask / 60))}:${modifyTime(
+        Math.floor(timerTask % 60)
       )}`;
     } else {
       return `00:00`;
     }
   };
-  handleStart = () => {
-    this.setState({ pause: false });
+  const handleStart = () => {
+    setPause(false);
   };
-  handleStop = () => {
-    this.setState({ pause: true });
+  const handleStop = () => {
+    setPause(true);
   };
 
-  startTimer = () => {
-    this.interval = setInterval(() => {
-      if (!this.state.pause && this.state.timer !== 0) {
-        this.setState(({ timer }) => {
-          return { timer: timer - 1 };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!pause && timerTask !== 0) {
+        setTimerTask((timerTask) => {
+          return timerTask - 1;
         });
       }
     }, 1000);
-  };
-  componentDidMount() {
-    this.startTimer();
-  }
-  componentWillUnmount() {
-    console.log("Удаление", this.state.timer);
 
-    clearInterval(this.interval);
-    this.props.updateTimer(this.props.id, this.state.timer);
-  }
+    return () => {
+      clearInterval(interval);
+      updateTimer(id, timerTask);
+    };
+  }, [pause, timerTask]);
 
-  render() {
-    const { label, date, onDeleted, onToggleCompleted, completed } = this.props;
+  const taskClassName = classNames({ completed: completed === true });
+  const checkbox = taskClassName;
+  const currentDate = new Date();
+  const createDate = date;
+  const created = formatDistance(createDate, currentDate, {
+    includeSeconds: true,
+  });
 
-    const taskClassName = classNames({ completed: completed === true });
-    const checkbox = taskClassName;
-    const currentDate = new Date();
-    const createDate = date;
-    const created = formatDistance(createDate, currentDate, {
-      includeSeconds: true,
-    });
-
-    return (
-      <li className={taskClassName}>
-        <div className="view">
-          <input
-            className="toggle"
-            type="checkbox"
-            checked={checkbox}
-            onChange={onToggleCompleted}
-          />
-          <label>
-            <span className="title" onClick={onToggleCompleted}>
-              {label}
-            </span>
-            <span className="description">
-              <button
-                className="icon icon-play"
-                onClick={this.handleStart}
-              ></button>
-              <button
-                className="icon icon-pause"
-                onClick={this.handleStop}
-              ></button>
-              <span className="timer">{this.timerSet()}</span>
-            </span>
-            <span className="description">{created}</span>
-          </label>
-          <button className="icon icon-edit"></button>
-          <button className="icon icon-destroy" onClick={onDeleted}></button>
-        </div>
-      </li>
-    );
-  }
+  return (
+    <li className={taskClassName}>
+      <div className="view">
+        <input
+          className="toggle"
+          type="checkbox"
+          checked={checkbox}
+          onChange={onToggleCompleted}
+        />
+        <label>
+          <span className="title" onClick={onToggleCompleted}>
+            {label}
+          </span>
+          <span className="description">
+            <button className="icon icon-play" onClick={handleStart}></button>
+            <button className="icon icon-pause" onClick={handleStop}></button>
+            <span className="timer">{timerSet()}</span>
+          </span>
+          <span className="description">{created}</span>
+        </label>
+        <button className="icon icon-edit"></button>
+        <button className="icon icon-destroy" onClick={onDeleted}></button>
+      </div>
+    </li>
+  );
 }
+export default Task;
